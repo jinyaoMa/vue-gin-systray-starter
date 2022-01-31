@@ -1,6 +1,28 @@
 package main
 
+import (
+	"app/config"
+	"app/server"
+	"app/tray"
+	"app/utils/logger"
+	"flag"
+)
+
+var hasTray = flag.Int("t", 1, "set to enable system tray")
+
 func main() {
-	tray := &Tray{}
-	tray.Run()
+	flag.Parse()
+
+	configs := config.DefaultConfigs()
+
+	logger := logger.New(configs.Logger, configs.IsDev)
+
+	server := server.New(logger.Server, configs.Server, configs.IsDev)
+
+	if *hasTray == 1 {
+		tray := tray.New(logger.Tray, configs.Tray, server)
+		tray.Run()
+	} else {
+		server.Start(true, true)
+	}
 }

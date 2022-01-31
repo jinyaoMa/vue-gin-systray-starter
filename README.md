@@ -1,11 +1,11 @@
 # About This Template
 
 - [x] vue3+ts, [https://v3.vuejs.org/](https://v3.vuejs.org/)
-- [ ] gin, [https://github.com/gin-gonic/gin](https://github.com/gin-gonic/gin)
-- [ ] systray, [https://github.com/getlantern/systray](https://github.com/getlantern/systray)
-- [ ] air, [https://github.com/cosmtrek/air](https://github.com/cosmtrek/air)
+- [x] gin, [https://github.com/gin-gonic/gin](https://github.com/gin-gonic/gin)
+- [x] systray, [https://github.com/getlantern/systray](https://github.com/getlantern/systray)
+- [x] air, [https://github.com/cosmtrek/air](https://github.com/cosmtrek/air)
 - [ ] gorm, [https://gorm.io/](https://gorm.io/)
-- [ ] swagger, [https://github.com/swaggo/gin-swagger](https://github.com/swaggo/gin-swagger)
+- [x] swagger, [https://github.com/swaggo/gin-swagger](https://github.com/swaggo/gin-swagger)
 - [ ] jwt, [https://github.com/golang-jwt/jwt](https://github.com/golang-jwt/jwt)
 - [ ] ini, [https://github.com/go-ini/ini](https://github.com/go-ini/ini)
 
