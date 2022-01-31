@@ -54,7 +54,7 @@
 // @license.name MIT
 // @license.url https://github.com/jinyaoMa/vue-gin-systray-starter/blob/main/LICENSE
 
-// @BasePath  /api
+// @BasePath /api
 
 // @securityDefinitions.apikey BearerToken
 // @in header

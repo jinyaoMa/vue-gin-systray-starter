@@ -8,7 +8,7 @@
     "front:test:unit": "vue-cli-service test:unit",
     "front:lint": "vue-cli-service lint",
     "ready:certs": "mkdir build || openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout build/localhost.key -out build/localhost.crt -subj \"/C=CN/ST=GD/L=Github/O=App/OU=Certs/CN=localhost/emailAddress=jinyao.ma@outlook.com\"",
-    "ready:swag": "swag init -g server/server.routes.go -o ./swagger",
+    "ready:swag": "swag init -g server/routes/routes.go -o ./swagger",
     "back:air": "air -c air.config.toml",
     "back:run": "go build -o ./build/app.exe . && cd build && app.exe",
     "back:build": "go build -tags=jsoniter -ldflags \"-H=windowsgui\" -o ./build/app.exe ."

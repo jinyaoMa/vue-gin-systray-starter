@@ -9,7 +9,6 @@ import (
 type Server struct {
 	isDev     bool
 	isRunning bool
-	withSwag  bool
 	logger    *log.Logger
 	config    *config.Server
 	http      *http.Server // redirecter
@@ -46,8 +45,7 @@ func (s *Server) Start(swag bool, loop bool) (ok bool) {
 	}
 
 	s.isRunning = true
-	s.withSwag = swag
-	s.prepare()
+	s.prepare(swag)
 	if loop {
 		go s.startRedirecter()
 		s.startServer()

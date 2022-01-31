@@ -1,6 +1,7 @@
 package server
 
 import (
+	"app/server/routes"
 	"context"
 	"crypto/tls"
 	"fmt"
@@ -17,7 +18,7 @@ import (
 
 var server *Server
 
-func (s *Server) prepare() {
+func (s *Server) prepare(swag bool) {
 	handler := gin.Default()
 	port := fmt.Sprintf(":%d", s.config.Port)
 	portTls := fmt.Sprintf(":%d", s.config.PortTls)
@@ -45,7 +46,7 @@ func (s *Server) prepare() {
 		}))
 	}
 
-	s.routes(handler)
+	routes.Init(handler, swag)
 
 	s.http = &http.Server{
 		Addr: port,

@@ -1,4 +1,4 @@
-package server
+package routes
 
 import (
 	_ "app/swagger"
@@ -19,20 +19,20 @@ import (
 // @license.name MIT
 // @license.url https://github.com/jinyaoMa/vue-gin-systray-starter/blob/main/LICENSE
 
-// @BasePath  /api
+// @BasePath /api
 
 // @securityDefinitions.apikey BearerToken
 // @in header
 // @name Authorization
 
-func (s *Server) routes(r *gin.Engine) {
+func Init(r *gin.Engine, swag bool) {
 	api := r.Group("/api")
 
 	api.GET("/", func(c *gin.Context) {
 		c.Status(http.StatusOK)
 	})
 
-	if s.withSwag {
+	if swag {
 		r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	}
 }
