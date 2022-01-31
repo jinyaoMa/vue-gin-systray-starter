@@ -2,6 +2,7 @@ package main
 
 import (
 	"app/config"
+	"app/database"
 	"app/server"
 	"app/tray"
 	"app/utils/logger"
@@ -16,6 +17,8 @@ func main() {
 	configs := config.LoadConfigs()
 
 	logger := logger.New(configs.Logger, configs.IsDev)
+
+	database.Connect(logger.Database, configs.Database)
 
 	server := server.New(logger.Server, configs.Server, configs.IsDev)
 
