@@ -3,21 +3,21 @@
 # Working directory
 # . or absolute path, please note that the directories following must be under root.
 root = "."
-tmp_dir = "air"
+tmp_dir = "build"
 
 [build]
 # Just plain old shell command. You could use `make` as well.
-cmd = "go build -o ./air/app.exe ."
+cmd = "go build -o ./build/app.exe ."
 # Binary file yields from `cmd`, can setup flag options when run your app.
 # eg. "tmp/main -flag option ."
-bin = "air/app.exe"
+bin = "build/app.exe"
 # Customize binary, can setup environment variables when run your app.
 # eg. "APP_ENV=dev APP_USER=air ./tmp/main"
 full_bin = ""
 # Watch these filename extensions.
 include_ext = ["go", "tpl", "tmpl", "html"]
 # Ignore these filename extensions or directories.
-exclude_dir = ["node_modules", "vendor", "public", "client", "air", "build"]
+exclude_dir = ["node_modules", "vendor", "public", "client", "build"]
 # Watch these directories if you specified.
 include_dir = []
 # Exclude files.

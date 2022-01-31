@@ -5,7 +5,6 @@ package-lock.json
 yarn.lock
 go.sum
 
-/air
 /build
 
 temp.md
