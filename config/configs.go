@@ -4,6 +4,8 @@ import (
 	"app/tray/locales"
 	"os"
 	"path/filepath"
+
+	"gopkg.in/ini.v1"
 )
 
 type Configs struct {
@@ -19,6 +21,7 @@ func DefaultConfigs() *Configs {
 	if err != nil {
 		panic(err)
 	}
+
 	return &Configs{
 		IniPath: filepath.Join(filepath.Dir(path), "app.ini"),
 		IsDev:   true,
@@ -38,4 +41,32 @@ func DefaultConfigs() *Configs {
 			CertDir: filepath.Dir(path),
 		},
 	}
+}
+
+func LoadConfigs() *Configs {
+	config := DefaultConfigs()
+
+	_, err := os.Stat(config.IniPath)
+	if err != nil {
+		if os.IsNotExist(err) {
+			iniFile := ini.Empty()
+			err := ini.ReflectFrom(iniFile, config)
+			if err != nil {
+				panic("Failed to create ini: " + config.IniPath)
+			}
+			iniFile.SaveTo(config.IniPath)
+			return config
+		}
+		panic("Error when loading ini: " + err.Error())
+	}
+
+	iniFile, err := ini.Load(config.IniPath)
+	if err != nil {
+		panic("Failed to load ini: " + config.IniPath)
+	}
+	err = iniFile.MapTo(config)
+	if err != nil {
+		panic("Failed to map ini: " + config.IniPath)
+	}
+	return config
 }

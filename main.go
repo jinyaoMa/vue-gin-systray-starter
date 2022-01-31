@@ -13,7 +13,7 @@ var hasTray = flag.Int("t", 1, "set to enable system tray")
 func main() {
 	flag.Parse()
 
-	configs := config.DefaultConfigs()
+	configs := config.LoadConfigs()
 
 	logger := logger.New(configs.Logger, configs.IsDev)
 

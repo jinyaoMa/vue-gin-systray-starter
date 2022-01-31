@@ -7,7 +7,7 @@
 - [ ] gorm, [https://gorm.io/](https://gorm.io/)
 - [x] swagger, [https://github.com/swaggo/gin-swagger](https://github.com/swaggo/gin-swagger)
 - [ ] jwt, [https://github.com/golang-jwt/jwt](https://github.com/golang-jwt/jwt)
-- [ ] ini, [https://github.com/go-ini/ini](https://github.com/go-ini/ini)
+- [x] ini, [https://github.com/go-ini/ini](https://github.com/go-ini/ini)
 
 ## Environment
 
