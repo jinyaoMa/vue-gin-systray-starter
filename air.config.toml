@@ -17,7 +17,7 @@ full_bin = ""
 # Watch these filename extensions.
 include_ext = ["go", "tpl", "tmpl", "html"]
 # Ignore these filename extensions or directories.
-exclude_dir = ["node_modules", "vendor", "public", "client", "build"]
+exclude_dir = ["node_modules", "vendor", "public", "client", "build", ".git"]
 # Watch these directories if you specified.
 include_dir = []
 # Exclude files.
