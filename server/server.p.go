@@ -11,7 +11,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/acme/autocert"
 )
@@ -28,25 +27,7 @@ func (s *Server) prepare(swag bool) {
 	}
 	tlsConfig := manager.TLSConfig()
 
-	if s.isDev {
-		handler.Use(cors.New(cors.Config{
-			AllowOrigins:     []string{"https://localhost:8081", "https://localhost:" + portTls},
-			AllowMethods:     []string{"GET", "POST"},
-			AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization"},
-			AllowCredentials: false,
-			MaxAge:           12 * time.Hour,
-		}))
-	} else {
-		handler.Use(cors.New(cors.Config{
-			AllowAllOrigins:  false,
-			AllowMethods:     []string{"GET", "POST"},
-			AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization"},
-			AllowCredentials: true,
-			MaxAge:           12 * time.Hour,
-		}))
-	}
-
-	routes.Init(handler, swag)
+	routes.Init(s.config, handler, swag)
 
 	s.http = &http.Server{
 		Addr: port,
@@ -110,7 +91,7 @@ func (s *Server) stopServer() (err error) {
 
 func (s *Server) resetGin(logger *log.Logger) {
 	gin.DefaultWriter = logger.Writer()
-	if server.isDev {
+	if s.isDev {
 		gin.SetMode(gin.DebugMode)
 	} else {
 		gin.SetMode(gin.ReleaseMode)

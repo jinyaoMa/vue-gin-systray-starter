@@ -1,9 +1,19 @@
 package routes
 
 import (
-	_ "app/swagger"
+	"app/config"
+	"app/database"
+	"app/server/models"
+	"app/server/routes/users"
+	_ "app/server/swagger"
+	"app/utils/logger"
+	"fmt"
 	"net/http"
+	"os"
+	"path/filepath"
+	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -25,14 +35,54 @@ import (
 // @in header
 // @name Authorization
 
-func Init(r *gin.Engine, swag bool) {
-	api := r.Group("/api")
+func Init(config *config.Server, handler *gin.Engine, swag bool) {
+	logger, ok := logger.GetInstance()
+	if ok {
+		db := database.Connect(logger.Database, config.Database)
+		db.AutoMigrate(&models.User{})
+	}
 
-	api.GET("/", func(c *gin.Context) {
-		c.Status(http.StatusOK)
-	})
+	if gin.Mode() == gin.DebugMode {
+		handler.Use(cors.New(cors.Config{
+			AllowAllOrigins:  true,
+			AllowMethods:     []string{"GET", "POST"},
+			AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization"},
+			AllowCredentials: false,
+			MaxAge:           12 * time.Hour,
+		}))
+	} else {
+		port := fmt.Sprintf(":%d", config.Port)
+		portTls := fmt.Sprintf(":%d", config.PortTls)
+		handler.Use(cors.New(cors.Config{
+			AllowOrigins: []string{
+				"http://" + config.Origin + ":" + port,
+				"https://" + config.Origin + ":" + portTls,
+			},
+			AllowMethods:     []string{"GET", "POST"},
+			AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization"},
+			AllowCredentials: true,
+			MaxAge:           12 * time.Hour,
+		}))
+
+		path, err := os.Executable()
+		if err == nil {
+			handler.Static("/assets", filepath.Join(filepath.Dir(path), "./www/assets"))
+			handler.StaticFile("/favicon.ico", filepath.Join(filepath.Dir(path), "./www/favicon.ico"))
+			handler.StaticFile("/", filepath.Join(filepath.Dir(path), "./www/index.html"))
+			handler.GET("/index.html", func(c *gin.Context) {
+				c.Redirect(http.StatusFound, "/")
+			})
+		}
+	}
+
+	api := handler.Group("/api")
+
+	_users := api.Group("/users")
+	{
+		_users.GET("/all", users.All())
+	}
 
 	if swag {
-		r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+		handler.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	}
 }

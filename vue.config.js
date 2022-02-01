@@ -10,7 +10,7 @@ function resolve(dir) {
 module.exports = {
   publicPath: "/",
   outputDir: "build/www",
-  assetsDir: "",
+  assetsDir: "assets",
   indexPath: "index.html",
   pages: {
     index: {

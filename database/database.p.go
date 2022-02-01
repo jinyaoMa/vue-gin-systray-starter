@@ -14,32 +14,32 @@ import (
 
 var database *Database
 
-func (d *Database) initDB() {
+func (d *Database) initDB() *gorm.DB {
 	switch d.config.Driver {
 	case config.DriverSqlite:
-		d.initSqlite()
+		return d.initSqlite()
 	case config.DriverMysql:
-		d.initMysql()
+		return d.initMysql()
 	case config.DriverPostgres:
-		d.initPostgres()
+		return d.initPostgres()
 	}
+	return nil
 }
 
-func (d *Database) initSqlite() {
-	var err error
-	DB, err = gorm.Open(sqlite.Open(d.config.Database), &gorm.Config{
+func (d *Database) initSqlite() *gorm.DB {
+	db, err := gorm.Open(sqlite.Open(d.config.Database), &gorm.Config{
 		Logger: d.getSqlLogger(),
 	})
 	if err != nil {
 		d.logger.Fatalf("database (sqlite) connect error %v\n", err)
 	}
-	if DB.Error != nil {
-		d.logger.Fatalf("database (sqlite) error %v\n", DB.Error)
+	if db.Error != nil {
+		d.logger.Fatalf("database (sqlite) error %v\n", db.Error)
 	}
+	return db
 }
 
-func (d *Database) initMysql() {
-	var err error
+func (d *Database) initMysql() *gorm.DB {
 	var dsn string = fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local&%s",
 		d.config.User,
 		d.config.Password,
@@ -47,19 +47,19 @@ func (d *Database) initMysql() {
 		d.config.Port,
 		d.config.Database,
 		d.config.Tail)
-	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
 		Logger: d.getSqlLogger(),
 	})
 	if err != nil {
 		d.logger.Fatalf("database (mysql) connect error %v\n", err)
 	}
-	if DB.Error != nil {
-		d.logger.Fatalf("database (mysql) error %v\n", DB.Error)
+	if db.Error != nil {
+		d.logger.Fatalf("database (mysql) error %v\n", db.Error)
 	}
+	return db
 }
 
-func (d *Database) initPostgres() {
-	var err error
+func (d *Database) initPostgres() *gorm.DB {
 	var dsn string = fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d %s",
 		d.config.Host,
 		d.config.User,
@@ -67,15 +67,16 @@ func (d *Database) initPostgres() {
 		d.config.Database,
 		d.config.Port,
 		d.config.Tail)
-	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
 		Logger: d.getSqlLogger(),
 	})
 	if err != nil {
 		d.logger.Fatalf("database (postgres) connect error %v\n", err)
 	}
-	if DB.Error != nil {
-		d.logger.Fatalf("database (postgres) error %v\n", DB.Error)
+	if db.Error != nil {
+		d.logger.Fatalf("database (postgres) error %v\n", db.Error)
 	}
+	return db
 }
 
 func (d *Database) getSqlLogger() gormLogger.Interface {

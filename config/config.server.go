@@ -1,7 +1,9 @@
 package config
 
 type Server struct {
-	Port    uint16
-	PortTls uint16
-	CertDir string
+	Port     uint16
+	PortTls  uint16
+	CertDir  string
+	Origin   string
+	Database *Database
 }

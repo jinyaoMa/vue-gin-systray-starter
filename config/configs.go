@@ -9,13 +9,12 @@ import (
 )
 
 type Configs struct {
-	IniPath  string `ini:"-"`
-	IsDev    bool
-	Logger   *Logger
-	Tray     *Tray
-	Server   *Server
-	Database *Database
-	Claims   *Claims
+	IniPath string `ini:"-"`
+	IsDev   bool
+	Logger  *Logger
+	Tray    *Tray
+	Server  *Server
+	Claims  *Claims
 }
 
 func DefaultConfigs() *Configs {
@@ -41,15 +40,16 @@ func DefaultConfigs() *Configs {
 			Port:    8080,
 			PortTls: 8443,
 			CertDir: filepath.Dir(path),
-		},
-		Database: &Database{
-			Driver:   DriverSqlite,
-			Host:     "",
-			Port:     0,
-			User:     "",
-			Password: "",
-			Database: filepath.Join(filepath.Dir(path), "app.db"),
-			Tail:     "",
+			Origin:  "localhost",
+			Database: &Database{
+				Driver:   DriverSqlite,
+				Host:     "",
+				Port:     0,
+				User:     "",
+				Password: "",
+				Database: filepath.Join(filepath.Dir(path), "app.db"),
+				Tail:     "",
+			},
 		},
 		Claims: &Claims{
 			Issuer:       "app",

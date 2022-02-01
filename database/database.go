@@ -14,10 +14,11 @@ type Database struct {
 	config *config.Database
 }
 
-func Init(logger *log.Logger, config *config.Database) {
+func Connect(logger *log.Logger, config *config.Database) *gorm.DB {
 	database = &Database{
 		logger: logger,
 		config: config,
 	}
-	database.initDB()
+	DB = database.initDB()
+	return DB
 }
