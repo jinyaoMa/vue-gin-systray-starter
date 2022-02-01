@@ -2,34 +2,22 @@ package database
 
 import (
 	"app/config"
-	"errors"
 	"log"
 
 	"gorm.io/gorm"
 )
 
+var DB *gorm.DB
+
 type Database struct {
 	logger *log.Logger
 	config *config.Database
-	DB     *gorm.DB
 }
 
-func GetInstance() (*Database, bool) {
-	return database, database != nil
-}
-
-func Connect(logger *log.Logger, config *config.Database, models ...interface{}) {
-	if database != nil {
-		if database.DB.Error != nil && errors.Is(database.DB.Error, gorm.ErrInvalidDB) {
-			database.logger = logger
-			database.config = config
-			database.initDriver(models...)
-		}
-	}
-
+func Init(logger *log.Logger, config *config.Database) {
 	database = &Database{
 		logger: logger,
 		config: config,
 	}
-	database.initDriver(models...)
+	database.initDB()
 }

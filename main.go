@@ -18,7 +18,7 @@ func main() {
 
 	logger := logger.New(configs.Logger, configs.IsDev)
 
-	database.Connect(logger.Database, configs.Database)
+	database.Init(logger.Database, configs.Database)
 
 	server := server.New(logger.Server, configs.Server, configs.IsDev)
 

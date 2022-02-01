@@ -14,7 +14,7 @@ import (
 
 var database *Database
 
-func (d *Database) initDriver(models ...interface{}) {
+func (d *Database) initDB() {
 	switch d.config.Driver {
 	case config.DriverSqlite:
 		d.initSqlite()
@@ -23,19 +23,18 @@ func (d *Database) initDriver(models ...interface{}) {
 	case config.DriverPostgres:
 		d.initPostgres()
 	}
-	d.DB.AutoMigrate(models...)
 }
 
 func (d *Database) initSqlite() {
 	var err error
-	d.DB, err = gorm.Open(sqlite.Open(d.config.Database), &gorm.Config{
+	DB, err = gorm.Open(sqlite.Open(d.config.Database), &gorm.Config{
 		Logger: d.getSqlLogger(),
 	})
 	if err != nil {
 		d.logger.Fatalf("database (sqlite) connect error %v\n", err)
 	}
-	if d.DB.Error != nil {
-		d.logger.Fatalf("database (sqlite) error %v\n", d.DB.Error)
+	if DB.Error != nil {
+		d.logger.Fatalf("database (sqlite) error %v\n", DB.Error)
 	}
 }
 
@@ -48,14 +47,14 @@ func (d *Database) initMysql() {
 		d.config.Port,
 		d.config.Database,
 		d.config.Tail)
-	d.DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
+	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
 		Logger: d.getSqlLogger(),
 	})
 	if err != nil {
 		d.logger.Fatalf("database (mysql) connect error %v\n", err)
 	}
-	if d.DB.Error != nil {
-		d.logger.Fatalf("database (mysql) error %v\n", d.DB.Error)
+	if DB.Error != nil {
+		d.logger.Fatalf("database (mysql) error %v\n", DB.Error)
 	}
 }
 
@@ -68,14 +67,14 @@ func (d *Database) initPostgres() {
 		d.config.Database,
 		d.config.Port,
 		d.config.Tail)
-	d.DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{
+	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{
 		Logger: d.getSqlLogger(),
 	})
 	if err != nil {
 		d.logger.Fatalf("database (postgres) connect error %v\n", err)
 	}
-	if d.DB.Error != nil {
-		d.logger.Fatalf("database (postgres) error %v\n", d.DB.Error)
+	if DB.Error != nil {
+		d.logger.Fatalf("database (postgres) error %v\n", DB.Error)
 	}
 }
 

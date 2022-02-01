@@ -6,7 +6,7 @@
 - [x] air, [https://github.com/cosmtrek/air](https://github.com/cosmtrek/air)
 - [x] gorm, [https://gorm.io/](https://gorm.io/)
 - [x] swagger, [https://github.com/swaggo/gin-swagger](https://github.com/swaggo/gin-swagger)
-- [ ] jwt, [https://github.com/golang-jwt/jwt](https://github.com/golang-jwt/jwt)
+- [x] jwt, [https://github.com/golang-jwt/jwt](https://github.com/golang-jwt/jwt)
 - [x] ini, [https://github.com/go-ini/ini](https://github.com/go-ini/ini)
 
 ## Environment
@@ -27,3 +27,15 @@ go install github.com/swaggo/swag/cmd/swag@latest
 # install go dependencies
 go mod tidy
 ```
+
+## Scripts
+
+- `front:serve`: run server for frontend development
+- `front:build`: build frontend into **folder `/build/www`** for production
+- `front:test:unit`: run frontend unit tests
+- `front:lint`: run frontend eslint
+- `ready:certs`: generate certificate for `localhost` to **folder `/build`**
+- `ready:swag`: generate swagger files to **folder `/swagger`**
+- `back:air`: run air for backend development
+- `back:run`: build backend to **folder `/build`** with **filename `app.exe`**, then run it
+- `back:build`: build backend to **folder `/build`** with **filename `app.exe`** and **ldflags `-H=windowsgui`**

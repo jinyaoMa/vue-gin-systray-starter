@@ -15,6 +15,7 @@ type Configs struct {
 	Tray     *Tray
 	Server   *Server
 	Database *Database
+	Claims   *Claims
 }
 
 func DefaultConfigs() *Configs {
@@ -49,6 +50,10 @@ func DefaultConfigs() *Configs {
 			Password: "",
 			Database: filepath.Join(filepath.Dir(path), "app.db"),
 			Tail:     "",
+		},
+		Claims: &Claims{
+			Issuer:       "app",
+			DaysToExpire: 15,
 		},
 	}
 }
